@@ -4,10 +4,6 @@
 import logging
 
 
-class NoCompleteSubsets(Exception):
-    pass
-
-
 class CharCounter(object):
     def __init__(self):
         self._map = {}
@@ -89,10 +85,7 @@ class KarmaManager(object):
         working_pool.sort(key=lambda x: (len(x), x))
         logging.debug('Starting with {} words total'.format(len(working_pool)))
 
-        try:
-            return self._findCompleteSubsets(source, working_pool)
-        except NoCompleteSubsets:
-            return None
+        return self._findCompleteSubsets(source, working_pool)
 
 
     def _findSubsets(self, target, words):
@@ -105,7 +98,7 @@ class KarmaManager(object):
     def _findCompleteSubsets(self, source, pool):
 
         if source and not pool:
-            raise NoCompleteSubsets
+            return
 
         word = pool.pop()
         while len(pool) > 0:
@@ -115,11 +108,8 @@ class KarmaManager(object):
             if remainder is None:
                 yield [word,]
             else:
-                try:
-                    for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool.copy())):
-                        yield [word,] + subset
-                except NoCompleteSubsets:
-                    pass
+                for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool.copy())):
+                    yield [word,] + subset
             word = pool.pop()
         remainder = source.remove(self.dictionary[word])
         if remainder is None:
@@ -146,16 +136,15 @@ def main():
 
     km = KarmaManager(args.dictionary)
 
-    try:
-        anagrams = km.makeAnagrams(args.words)
-        if anagrams is not None:
-            for anagram in anagrams:
-                print(' '.join(anagram).capitalize())
-            sys.exit(0)
-        else:
-            print('Unable to find anything')
-            sys.exit(1)
-    except NoCompleteSubsets:
+    anagrams = km.makeAnagrams(args.words)
+    counter = 0
+    for anagram in anagrams:
+        print(' '.join(anagram).capitalize())
+        counter += 1;
+    logging.info("{} total anagrams found".format(counter))
+    if counter > 0:
+        sys.exit(0)
+    else:
         print('Unable to find anything')
         sys.exit(1)
 
