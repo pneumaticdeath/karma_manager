@@ -52,18 +52,20 @@ class CharCounter(object):
 
 class KarmaManager(object):
     def __init__(self, dictionary_file):
+        self.dictionary = {}
         with open(dictionary_file, 'r') as f:
-            self.dictionary = self.readDictionary(f)
+            self.readDictionary(f)
 
     def readDictionary(self, f):
-        dictionary = {}
         for word in f.readlines():
-            word = self.smash(word)
-            if word not in dictionary:
-                dictionary[word] = self.parseWord(word)
-            else:
-                logging.warning('Word {} appears more than once in the dictionary'.format(word))
-        return dictionary
+            self.addDictionaryWord(word)
+
+    def addDictionaryWord(self, word):
+        word = self.smash(word)
+        if word not in self.dictionary:
+            self.dictionary[word] = self.parseWord(word)
+        else:
+            logging.warning('Attempted to add duplicate word {} to the dictionary'.format(word))
 
     def parseWord(self, word):
         retval = CharCounter()
