@@ -109,7 +109,7 @@ class KarmaManager(object):
             if remainder is None:
                 yield [word,]
             else:
-                for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool.copy())):
+                for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool)):
                     yield [word,] + subset
             pool.pop()
 
