@@ -90,8 +90,7 @@ class KarmaManager(object):
         logging.debug('Starting with {} words total'.format(len(working_pool)))
 
         try:
-            solution = self._findCompleteSubsets(source, working_pool)
-            return solution
+            return self._findCompleteSubsets(source, working_pool)
         except NoCompleteSubsets:
             return None
 
@@ -147,12 +146,16 @@ def main():
 
     km = KarmaManager(args.dictionary)
 
-    anagrams = km.makeAnagrams(args.words)
-    if anagrams is not None:
-        for anagram in anagrams:
-            print(' '.join(anagram).capitalize())
-        sys.exit(0)
-    else:
+    try:
+        anagrams = km.makeAnagrams(args.words)
+        if anagrams is not None:
+            for anagram in anagrams:
+                print(' '.join(anagram).capitalize())
+            sys.exit(0)
+        else:
+            print('Unable to find anything')
+            sys.exit(1)
+    except NoCompleteSubsets:
         print('Unable to find anything')
         sys.exit(1)
 
