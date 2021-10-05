@@ -87,7 +87,6 @@ class KarmaManager(object):
 
         return self._findCompleteSubsets(source, working_pool)
 
-
     def _findSubsets(self, target, words):
         subsets = []
         for word in words:
