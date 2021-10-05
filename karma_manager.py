@@ -101,8 +101,8 @@ class KarmaManager(object):
         if source and not pool:
             return
 
-        word = pool.pop()
         while len(pool) > 0:
+            word = pool[-1]
             logging.debug('Starting to find subsets with word {} with pool of {}'.format(word,len(pool)))
             remainder = source.remove(self.dictionary[word])
             logging.debug('Remainder is {}'.format(str(remainder)))
@@ -111,10 +111,7 @@ class KarmaManager(object):
             else:
                 for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool.copy())):
                     yield [word,] + subset
-            word = pool.pop()
-        remainder = source.remove(self.dictionary[word])
-        if remainder is None:
-            yield [word,]
+            pool.pop()
 
 
 def main():
@@ -151,4 +148,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
