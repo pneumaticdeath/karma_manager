@@ -21,7 +21,6 @@ class CharCounter(object):
     def remove(self, other):
         retval = CharCounter()
         remaining = 0
-        # logging.debug('Starting with set {} removing {}'.format(str(self), str(other)))
         for c, cnt in self._map.items():
             if c in other._map:
                 newtot = cnt - other._map[c]
@@ -33,7 +32,6 @@ class CharCounter(object):
             else:
                 retval._map[c] = cnt
                 remaining += cnt
-        # logging.debug('{} characters remaining in {}'.format(remaining, str(retval)))
         if remaining > 0:
             return retval
         else:
@@ -67,7 +65,6 @@ class KarmaManager(object):
             word = self.smash(word)
             if word not in dictionary:
                 dictionary[word] = self.parseWord(word)
-                # logging.debug('Parsed {} as {}'.format(word, str(dictionary[word])))
             else:
                 logging.warning('Word {} appears more than once in the dictionary'.format(word))
         return dictionary
@@ -107,32 +104,27 @@ class KarmaManager(object):
         return subsets
 
     def _findCompleteSubsets(self, source, pool):
-        subsets = []
 
         if source and not pool:
             raise NoCompleteSubsets
 
         word = pool.pop()
         while len(pool) > 0:
-            # logging.debug('Starting to find subsets with word {} with pool of {}'.format(word,len(pool)))
+            logging.debug('Starting to find subsets with word {} with pool of {}'.format(word,len(pool)))
             remainder = source.remove(self.dictionary[word])
-            # logging.debug('Remainder is {}'.format(str(remainder)))
+            logging.debug('Remainder is {}'.format(str(remainder)))
             if remainder is None:
-                subsets.append([word,])
+                yield [word,]
             else:
                 try:
                     for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool.copy())):
-                        subsets.append([word,] + subset)
+                        yield [word,] + subset
                 except NoCompleteSubsets:
                     pass
             word = pool.pop()
         remainder = source.remove(self.dictionary[word])
         if remainder is None:
-            subsets.append([word,])
-        if not subsets:
-            raise NoCompleteSubsets()
-        # logging.debug('Returning subsets {}'.format(subsets))
-        return subsets
+            yield [word,]
 
 
 def main():
@@ -140,7 +132,7 @@ def main():
     import sys
 
     parser = argparse.ArgumentParser('karma_manager', description='anagram maker')
-    parser.add_argument('--dictionary', default='dict', help='dictionary to use')
+    parser.add_argument('--dictionary', default='dict.txt', help='dictionary to use')
     parser.add_argument('--debug', action='store_true', help='enable debugging output on stderr')
     parser.add_argument('words', type=str, nargs='+', help='words to create anagrams from')
 
@@ -152,7 +144,6 @@ def main():
         log_level = logging.INFO
 
     logging.basicConfig(level=log_level)
-
 
     km = KarmaManager(args.dictionary)
 
