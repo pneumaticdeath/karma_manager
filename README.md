@@ -1,7 +1,7 @@
 # karma_manager
 
 Karma Manager is an anagram maker, as well as an angram in its own right.  This is based on hazy memories of the algoritm used by a similarly
-named and functional program for the Mac in the late 80's and early 90's.  The program itself it still available on the 
+named and functional program for the Mac in the late 80's and early 90's.  The original program is still available on the 
 [Internet Archive](https://archive.org/details/MacintoshSharewareGamesK) if you've got an emulator.  
 
 This implementation is written in python and is strictly a command line interface or library.  It doesn't come with a dictionary of words to use
