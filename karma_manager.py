@@ -98,7 +98,7 @@ class KarmaManager(object):
 
     def _findCompleteSubsets(self, source, pool):
 
-        if source and not pool:
+        if not pool:
             return
 
         while len(pool) > 0:
