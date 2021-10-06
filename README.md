@@ -4,7 +4,7 @@ Karma Manager is an anagram maker, as well as an angram in its own right.  This 
 named and functional program for the Mac in the late 80's and early 90's.  The original program is still available on the 
 [Internet Archive](https://archive.org/details/MacintoshSharewareGamesK) if you've got an emulator.  
 
-This implementation is written in python and is strictly a command line interface or library.  It doesn't come with a dictionary of words to use
+This implementation is written in python (3, who uses 2 any more?) and is strictly a command line interface or library.  It doesn't come with a dictionary of words to use
 for licensing reasons.  I've provided a script called `make_dict.sh` to fetch one from the internet, though how long it hangs around is anybody's
 guess.  You can also provide your own, though it should be noted that this implementation is very rooted in the Ascii character set, and therefore 
 standard english/latin characters.  Attempts to use this with unicode text will likely produce strange results.
