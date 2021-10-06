@@ -1,6 +1,6 @@
 # karma_manager
 
-Karma Manager is an anagram maker, as well as an angram in its own right.  This is based on hazy memories of the algoritm used by a similarly
+Karma Manager is an anagram maker, as well as an angram in its own right.  This is based on hazy memories of the algorithm used by a similarly
 named and functional program for the Mac in the late 80's and early 90's.  The original program is still available on the 
 [Internet Archive](https://archive.org/details/MacintoshSharewareGamesK) if you've got an emulator.  
 
