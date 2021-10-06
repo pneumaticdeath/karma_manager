@@ -70,21 +70,31 @@ class KarmaManager(object):
     def parseWord(self, word):
         retval = CharCounter()
         for c in word:
-            retval.count(c)
+            if c.isalpha():
+                retval.count(c.lower())
         return retval
 
     def smash(self, word):
-        return word.lower().translate(word.maketrans('','',' \t\n\r'))
+        return word.lower().translate(word.maketrans('','','\t\n\r'))
 
     def makeAnagrams(self, words):
-        word = ''
-        for w in words:
-            word += self.smash(w)
+        word = ' '.join(words)
         source = self.parseWord(word)
-        logging.debug('Starting with source set {}'.format(str(source)))
+        logging.debug('Starting with phrase "{}" and source set {}'.format(word, str(source)))
 
+        # This will find only those dictionary words that are a subset of the characters in the
+        # input phrase/word.  If the input doesn't have a 'z', then there's no point in including
+        # words with 'z' in them.
         working_pool = self._findSubsets(source, self.dictionary.keys())
+
+        # This is a hackish optimization.  It's sorts the words first by length then alphabetically
+        # if the same length.  Since _fineCompleteSubsets works backwards through the pool it will
+        # start with the longest words first, and work its way backward through the alphabet
+        # This will mean that it will find matches with longer words first, which is means quicker
+        # results for first match, and that the words it finds will be more interesting.  There
+        # is probbably a better optimization out there.
         working_pool.sort(key=lambda x: (len(x), x))
+
         logging.debug('Starting with {} words total'.format(len(working_pool)))
 
         return self._findCompleteSubsets(source, working_pool)
