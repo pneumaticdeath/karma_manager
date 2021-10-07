@@ -106,20 +106,19 @@ class KarmaManager(object):
                 subsets.append(word)
         return subsets
 
-    def _findCompleteSubsets(self, source, pool):
+    def _findCompleteSubsets(self, source, pool, depth=0):
 
         if not pool:
             return
 
         while len(pool) > 0:
             word = pool[-1]
-            logging.debug('Starting to find subsets with word {} with pool of {}'.format(word,len(pool)))
             remainder = source.remove(self.dictionary[word])
-            logging.debug('Remainder is {}'.format(str(remainder)))
+            logging.debug('{}Find subsets with word {} with pool of {} and remainder {}'.format(' ' * depth, word, len(pool), str(remainder)))
             if remainder is None:
                 yield [word,]
             else:
-                for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool)):
+                for subset in self._findCompleteSubsets(remainder, self._findSubsets(remainder, pool), depth+1):
                     yield [word,] + subset
             pool.pop()
 
