@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Karma Manager is an Anagram Maker</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="karma_manager.js"></script>
+<style>
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+</style>
+    </head>
+    
+    <body>
+        <span style="font-size:5vw">Karma Manager</span>
+	<span style="font-size:3vw">the Anagram Maker</span><br/>
+	<span style="font-size:2vw">web implementation by Mitch Patenaude</span><br/>
+        <span style="font-size:2vw">(with thanks to the author of the Mac Shareware program)</span><p/>
+
+        <div ng-app="karmaManager" ng-controller="karmaKontrol">
+            Input words: <input type="text" ng-model="sourceWords"></input><br/>
+            Maximum number: <input type="range" ng-model="numAnagrams" min=100 max=1000><br/>
+	    {{ anagrams.length }} Anagrams:<br/>
+            <table>
+                <tr ng-repeat="a in anagrams">
+                    <td>{{ a }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <script>
+var app = angular.module("karmaManager", []);
+app.controller("karmaKontrol", function($scope, $http) {
+    $scope.km = new KarmaManager([]);
+    $http.get('dict.json').then( function(response) {
+        $scope.dict = response.data;
+        $scope.km = new KarmaManager($scope.dict);
+    })
+
+    $scope.anagrams = [];
+    $scope.sourceWords = "";
+    $scope.numAnagrams = 500;
+
+    $scope.$watchCollection("[sourceWords, numAnagrams]", function( newValue, oldValue ) {
+        $scope.anagrams = [];
+        let count = 0;
+        
+        for ( let a of $scope.km.makeAnagrams([$scope.sourceWords]) ) {
+            $scope.anagrams.push(a.join(" "));
+            count++;
+            if ( count >= $scope.numAnagrams ) break;
+        }
+    });
+});
+        </script>
+    </body>
+</html>
