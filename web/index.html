@@ -20,14 +20,22 @@ table tr:nth-child(even) {
     </head>
     
     <body>
-        <span style="font-size:5vw">Karma Manager</span>
-	<span style="font-size:3vw">the Anagram Maker</span><br/>
-	<span style="font-size:2vw">web implementation by Mitch Patenaude</span><br/>
-        <span style="font-size:2vw">(with thanks to the author of the Mac Shareware program)</span><p/>
+        <span style="font-size:5vw">Karma Manager </span>
+	<span style="font-size:4vw">the Anagram Maker</span><p/>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
-            Input words: <input type="text" ng-model="sourceWords"></input><br/>
+            Input words: <input type="text" ng-model="sourceWords"></input><p/>
+            <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
+            <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 50vw;" ng-model="seedText"></textarea><p/></div>
+            <div style="display: {{ advanced }};"> Exclude words: <textarea style="width: 50vw;"  ng-model="exclusions"></textarea><p/></div>
             Maximum number: <input type="range" ng-model="numAnagrams" min=100 max=1000><br/>
+            <div>
+                <table>
+                    <tr style="background-color: #ff7f7f;" ng-repeat="e in errors">
+                        <td>{{ e }}</td>
+                    </tr>
+                </table>
+            </div>
 	    {{ anagrams.length }} Anagrams:<br/>
             <table>
                 <tr ng-repeat="a in anagrams">
@@ -36,23 +44,61 @@ table tr:nth-child(even) {
             </table>
         </div>
 
+	web implementation by Mitch Patenaude<br/>
+        (thanks to the author of the 80's Mac Shareware)
+
         <script>
 var app = angular.module("karmaManager", []);
 app.controller("karmaKontrol", function($scope, $http) {
     $scope.km = new KarmaManager([]);
+    $scope.advanced = "none";
     $http.get('dict.json').then( function(response) {
         $scope.dict = response.data;
         $scope.km = new KarmaManager($scope.dict);
     })
 
     $scope.anagrams = [];
+    $scope.errors = [];
     $scope.sourceWords = "";
     $scope.numAnagrams = 500;
 
-    $scope.$watchCollection("[sourceWords, numAnagrams]", function( newValue, oldValue ) {
+    $scope.toggleAdvanced = function() {
+        if ( $scope.advanced == "none" ) {
+            $scope.advanced = "";
+        } else {
+            $scope.advanced = "none";
+            $scope.km.clearSeedSet();
+            $scope.seedText = "";
+            $scope.exclusions = "";
+        }
+    }
+
+    $scope.$watchCollection("[sourceWords, numAnagrams, seedText, exclusions]", function( newValue, oldValue ) {
         $scope.anagrams = [];
+        $scope.errors = [];
         let count = 0;
-        
+
+        $scope.km.clearSeedSet();
+
+        if ( $scope.seedText ) {
+            let target = parseWord($scope.sourceWords);
+            for ( let seed of $scope.seedText.split("\n") ) {
+                if ( seed ) {
+                    let seedTarget = parseWord(seed);
+                    if ( seedTarget.subsetOf(target) ) {
+                        $scope.km.setSeedSet(seed.split(" "));
+                    } else {
+                        $scope.errors.push("Included phrase '"+seed+"' not a subset of input words");
+                    }
+                }
+            }
+        }
+
+        $scope.km.clearExclusionSet();
+        if ( $scope.exclusions ) {
+            $scope.km.setExclusionSet($scope.exclusions.split(/\s+/));
+        }
+
         for ( let a of $scope.km.makeAnagrams([$scope.sourceWords]) ) {
             $scope.anagrams.push(a.join(" "));
             count++;

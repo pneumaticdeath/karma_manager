@@ -55,33 +55,71 @@ class KarmaManager {
     constructor(dict) {
         this.dictionary = new Map();
         this.readDictionary(dict);
+        this.exclusionSet = new Set();
+        this.seedSet = [];
     }
 
     readDictionary(dict) {
         for ( let word of dict ) {
-            this.dictionary.set(word, this.parseWord(word.toLowerCase()));
+            this.dictionary.set(word, parseWord(word.toLowerCase()));
         } 
     }
 
-    parseWord(word) {
-        let cntr = new CharCounter();
-        let new_word = word.toLowerCase();
-        for (let index = 0; index < new_word.length; index++ ) {
-            var c = new_word[index];
-            if ( c != ' '  && c >= 'a' && c <= 'z') {
-                cntr.countChar(new_word[index]);
-            }
+    setExclusionSet(ex_set) {
+        for ( let word of ex_set ) {
+            this.exclusionSet.add(word);
         }
-        return cntr;
+    }
+    
+    setSeedSet(seed_phrase) {
+        this.seedSet.push(seed_phrase);
+    }
+
+    clearSeedSet() {
+        this.seedSet = [];
+    }
+
+    clearExclusionSet() {
+        this.exclusionSet.clear();
+    }
+
+    processExclusionSet() {
+        this.pool = this.pool.filter((word) => { return !this.exclusionSet.has(word) });
+    }
+
+    parseTarget(words) {
+        this.target = parseWord(words.join(""));
+        return this.target;
+    }
+
+    findWordPool() {
+        this.pool = findSubsets(this.target, this.dictionary.keys(), this.dictionary);
+        this.pool.sort(function(a,b){return a.length-b.length || a>b})
+
+        return this.pool;
     }
 
     makeAnagrams(words) {
-        let target = this.parseWord(words.join(""));
-        let pool = findSubsets(target, this.dictionary.keys(), this.dictionary);
-        pool.sort(function(a,b){return a.length-b.length || a>b})
+        this.parseTarget(words);
 
-        return findCompleteSubsets(target, pool, this.dictionary);
+        this.findWordPool();
+
+        this.processExclusionSet();
+
+        return findCompleteSubsets(this.target, this.pool, this.dictionary, this.seedSet);
     }
+}
+
+function parseWord(word) {
+    let cntr = new CharCounter();
+    let new_word = word.toLowerCase();
+    for (let index = 0; index < new_word.length; index++ ) {
+        var c = new_word[index];
+        if ( c >= 'a' && c <= 'z') {
+            cntr.countChar(new_word[index]);
+        }
+    }
+    return cntr;
 }
 
 let findSubsets = function(target, pool, dictionary) {
@@ -94,20 +132,34 @@ let findSubsets = function(target, pool, dictionary) {
     return retval;
 };
 
-function* findCompleteSubsets(target, pool, dictionary, depth=0) {
-    while ( pool.length > 0 ) {
-        let word = pool[pool.length - 1];
-	// console.log(depth);
-        // console.log(word);
-        let remainder = target.remove(dictionary.get(word));
-        // console.log(remainder.counters);
-        if ( remainder.empty() ) {
-            yield [word];
-        } else {
-            for ( let subset of findCompleteSubsets(remainder, findSubsets(remainder, pool, dictionary), dictionary, depth+1) ) {
-                yield [word].concat(subset);
+function* findCompleteSubsets(target, pool, dictionary, seedset=[], depth=0) {
+    if ( seedset.length > 0) {
+        for ( let seed of seedset ) {
+            newtarget = target.remove(parseWord(seed.join("")));
+            if ( newtarget.empty() ) {
+                yield seed;
+            } else {
+                newpool = findSubsets(newtarget, pool, dictionary);
+                for ( let subset of findCompleteSubsets(newtarget, newpool, dictionary, [], depth+1) ) {
+                    yield seed.concat(subset);
+                }
             }
         }
-        pool.pop()
+    } else {
+        while ( pool.length > 0 ) {
+            let word = pool[pool.length - 1];
+            // console.log(depth);
+            // console.log(word);
+            let remainder = target.remove(dictionary.get(word));
+            // console.log(remainder.counters);
+            if ( remainder.empty() ) {
+                yield [word];
+            } else {
+                for ( let subset of findCompleteSubsets(remainder, findSubsets(remainder, pool, dictionary), dictionary, depth+1) ) {
+                    yield [word].concat(subset);
+                }
+            }
+            pool.pop()
+        }
     }
 }
