@@ -67,7 +67,7 @@ class KarmaManager {
 
     setExclusionSet(ex_set) {
         for ( let word of ex_set ) {
-            this.exclusionSet.add(word);
+            this.exclusionSet.add(word.toLowerCase());
         }
     }
     
