@@ -24,7 +24,8 @@ table tr:nth-child(even) {
 	<span style="font-size:4vw">the Anagram Maker</span><p/>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
-            Input words: <input type="text" style="width: 40vw;" ng-model="sourceWords"></input><p/>
+            Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords"></input><p/>
+            Solved using {{km.pool.length}} words from the dictionary<p/>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
             <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 50vw;" ng-model="seedText"></textarea><p/></div>
             <div style="display: {{ advanced }};"> Exclude words: <textarea style="width: 50vw;"  ng-model="exclusions"></textarea><p/></div>
@@ -38,7 +39,7 @@ table tr:nth-child(even) {
             </div>
             <button type="button" ng-click="backwardPage()" ng-disabled="startIndex <= 0">backward</button>
             Anagrams {{ startIndex + 1 }} to {{ startIndex + anagrams.length }}&nbsp;
-            <button type="button" ng-click="forwardPage()" ng-disabled="count <= startIndex + pageSize">forward</button> <br/>
+            <button type="button" ng-click="forwardPage()" ng-disabled="count <= startIndex + pageSize">forward</button> <p/>
             <table>
                 <tr ng-repeat="a in anagrams">
                     <td>{{ a }}</td>
@@ -107,7 +108,7 @@ app.controller("karmaKontrol", function($scope, $http) {
 
         $scope.km.clearExclusionSet();
         if ( $scope.exclusions ) {
-            $scope.km.setExclusionSet($scope.exclusions.split(/\s+/));
+            $scope.km.setExclusionSet($scope.exclusions.split(/[\s,]+/));
         }
 
         $scope.startIndex = 0;

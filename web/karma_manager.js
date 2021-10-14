@@ -57,6 +57,7 @@ class KarmaManager {
         this.readDictionary(dict);
         this.exclusionSet = new Set();
         this.seedSet = [];
+        this.pool = [];
     }
 
     readDictionary(dict) {
@@ -106,7 +107,7 @@ class KarmaManager {
 
         this.processExclusionSet();
 
-        return findCompleteSubsets(this.target, this.pool, this.dictionary, this.seedSet);
+        return findCompleteSubsets(this.target, [...this.pool], this.dictionary, this.seedSet);
     }
 }
 
