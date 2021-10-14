@@ -24,11 +24,11 @@ table tr:nth-child(even) {
 	<span style="font-size:4vw">the Anagram Maker</span><p/>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
-            Input words: <input type="text" ng-model="sourceWords"></input><p/>
+            Input words: <input type="text" style="width: 40vw;" ng-model="sourceWords"></input><p/>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
             <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 50vw;" ng-model="seedText"></textarea><p/></div>
             <div style="display: {{ advanced }};"> Exclude words: <textarea style="width: 50vw;"  ng-model="exclusions"></textarea><p/></div>
-            Maximum number: <input type="range" ng-model="numAnagrams" min=100 max=1000><br/>
+            Page size: <input type="range" ng-model="pageSize" min=10 max=50> {{ pageSize }} <p/>
             <div>
                 <table>
                     <tr style="background-color: #ff7f7f;" ng-repeat="e in errors">
@@ -36,7 +36,9 @@ table tr:nth-child(even) {
                     </tr>
                 </table>
             </div>
-	    {{ anagrams.length }} Anagrams:<br/>
+            <button type="button" ng-click="backwardPage()" ng-disabled="startIndex <= 0">backward</button>
+            Anagrams {{ startIndex + 1 }} to {{ startIndex + anagrams.length }}&nbsp;
+            <button type="button" ng-click="forwardPage()" ng-disabled="count <= startIndex + pageSize">forward</button> <br/>
             <table>
                 <tr ng-repeat="a in anagrams">
                     <td>{{ a }}</td>
@@ -57,10 +59,11 @@ app.controller("karmaKontrol", function($scope, $http) {
         $scope.km = new KarmaManager($scope.dict);
     })
 
+    $scope.startIndex = 0;
     $scope.anagrams = [];
     $scope.errors = [];
     $scope.sourceWords = "";
-    $scope.numAnagrams = 500;
+    $scope.pageSize = 20;
 
     $scope.toggleAdvanced = function() {
         if ( $scope.advanced == "none" ) {
@@ -73,10 +76,18 @@ app.controller("karmaKontrol", function($scope, $http) {
         }
     }
 
-    $scope.$watchCollection("[sourceWords, numAnagrams, seedText, exclusions]", function( newValue, oldValue ) {
-        $scope.anagrams = [];
+    $scope.forwardPage = function() {
+        $scope.startIndex += $scope.pageSize;
+        console.log($scope.startindex);
+    }
+
+    $scope.backwardPage = function() {
+        $scope.startIndex -= $scope.pageSize;
+        if ( $scope.startIndex < 0 ) $scope.startIndex = 0;
+    }
+
+    $scope.$watchCollection("[sourceWords, seedText, exclusions]", function( newValue, oldValue ) {
         $scope.errors = [];
-        let count = 0;
 
         $scope.km.clearSeedSet();
 
@@ -99,12 +110,25 @@ app.controller("karmaKontrol", function($scope, $http) {
             $scope.km.setExclusionSet($scope.exclusions.split(/\s+/));
         }
 
-        for ( let a of $scope.km.makeAnagrams([$scope.sourceWords]) ) {
-            $scope.anagrams.push(a.join(" "));
-            count++;
-            if ( count >= $scope.numAnagrams ) break;
-        }
+        $scope.startIndex = 0;
+        makeAnagrams();
     });
+
+    $scope.$watchCollection("[startIndex, pageSize]", function( newValue, oldValue ) {
+        makeAnagrams();
+    });
+
+    function makeAnagrams() {
+        $scope.count = 0;
+        $scope.anagrams = [];
+        for ( let a of $scope.km.makeAnagrams([$scope.sourceWords]) ) {
+            if ( $scope.count >= $scope.startIndex && $scope.count < ($scope.startIndex+$scope.pageSize) ) {
+                $scope.anagrams.push(a.join(" "));
+            }
+            $scope.count++;
+            if ( $scope.count > ($scope.startIndex + $scope.pageSize) ) break;
+        }
+    }
 });
         </script>
     </body>
