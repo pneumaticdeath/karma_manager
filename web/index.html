@@ -27,8 +27,8 @@ table tr:nth-child(even) {
             Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords"></input><p/>
             Solved using {{km.pool.length}} words from the dictionary<p/>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
-            <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 50vw;" ng-model="seedText"></textarea><p/></div>
-            <div style="display: {{ advanced }};"> Exclude words: <textarea style="width: 50vw;"  ng-model="exclusions"></textarea><p/></div>
+            <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
+            <div style="display: {{ advanced }};"> Exclude words: <textarea style="width: 30vw;"  ng-model="exclusions"></textarea><p/></div>
             Page size: <input type="range" ng-model="pageSize" min=10 max=50> {{ pageSize }} <p/>
             <div>
                 <table>
@@ -47,7 +47,7 @@ table tr:nth-child(even) {
             </table>
         </div>
 
-	web implementation by Mitch Patenaude<br/>
+        web implementation by <a href="mailto:mitch@mitchpatenaude.net?subject=Karma%20Manager">Mitch Patenaude</a><br/>
         (thanks to the author of the 80's Mac Shareware)
 
         <script>
