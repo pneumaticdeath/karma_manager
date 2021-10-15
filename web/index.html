@@ -17,15 +17,37 @@ table tr:nth-child(even) {
   background-color: #ffffff;
 }
 </style>
+<style type="text/css">
+    .divFloat {
+        margin: 10px auto;
+        float: top;
+        background-color: #FFF;
+        color: #000;
+        width: 80vw;
+        # height: auto;
+        padding: 5vw;
+        border: solid 1px #999;
+        -webkit-border-radius: 3px;
+        -webkit-box-orient: vertical;
+        -webkit-transition: 200ms -webkit-transform;
+        box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+</style>
     </head>
     
     <body>
-        <span style="font-size:5vw">Karma Manager </span>
-	<span style="font-size:4vw">the Anagram Maker</span><p/>
+        <span style="font-size:4vw">Karma Manager </span>
+        <span style="font-size:3vw">the Anagram Maker</span><p/>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
             Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords"></input><p/>
-            Solved using {{km.pool.length}} words from the dictionary<p/>
+            Solved using <button ng-click="showWords(true)">{{km.pool.length}}</button> words from the dictionary<p/>
+            <div class="divFloat" ng-hide="hideWords">
+                <strong>Dictionary words in use:</strong>
+                <button style="float: right; position: relative;" ng-click="showWords(false)"><strong>&times;</strong></button>
+                <br/>
+                <span ng-repeat="w in makeReverse(km.pool)">{{ w }} </span>
+            </div>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
             <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
             <div style="display: {{ advanced }};"> Exclude words: <textarea style="width: 30vw;"  ng-model="exclusions"></textarea><p/></div>
@@ -60,6 +82,7 @@ app.controller("karmaKontrol", function($scope, $http) {
         $scope.km = new KarmaManager($scope.dict);
     })
 
+    $scope.hideWords=true;
     $scope.startIndex = 0;
     $scope.anagrams = [];
     $scope.errors = [];
@@ -75,17 +98,27 @@ app.controller("karmaKontrol", function($scope, $http) {
             $scope.seedText = "";
             $scope.exclusions = "";
         }
-    }
+    };
+
+    $scope.showWords = function(flag) {
+        $scope.hideWords = ! flag;
+    };
 
     $scope.forwardPage = function() {
         $scope.startIndex += $scope.pageSize;
         console.log($scope.startindex);
-    }
+    };
 
     $scope.backwardPage = function() {
         $scope.startIndex -= $scope.pageSize;
         if ( $scope.startIndex < 0 ) $scope.startIndex = 0;
-    }
+    };
+
+    $scope.makeReverse = function(l) {
+        let retval = [...l];
+        retval.reverse();
+        return retval;
+    };
 
     $scope.$watchCollection("[sourceWords, seedText, exclusions]", function( newValue, oldValue ) {
         $scope.errors = [];
