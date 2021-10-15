@@ -41,7 +41,7 @@ table tr:nth-child(even) {
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
             Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords"></input><p/>
-            Solved using <button ng-click="showWords(true)">{{km.pool.length}}</button> words from the dictionary<p/>
+            Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary<p/>
             <div class="divFloat" ng-hide="hideWords">
                 <strong>Dictionary words in use:</strong>
                 <button style="float: right; position: relative;" ng-click="showWords(false)"><strong>&times;</strong></button>
@@ -102,6 +102,10 @@ app.controller("karmaKontrol", function($scope, $http) {
 
     $scope.showWords = function(flag) {
         $scope.hideWords = ! flag;
+    };
+
+    $scope.toggleWords = function(flag) {
+        $scope.hideWords = ! $scope.hideWords;
     };
 
     $scope.forwardPage = function() {
