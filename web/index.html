@@ -46,7 +46,7 @@ table tr:nth-child(even) {
                 <strong>Dictionary words in use:</strong>
                 <button style="float: right; position: relative;" ng-click="showWords(false)"><strong>&times;</strong></button>
                 <br/>
-                <span ng-repeat="w in sortByFreq(km.pool)" ><font size="{{ 5+myLog(wordCounter.get(w)) }}">{{ w }}</font>({{wordCounter.get(w)}}) </span>
+                <span ng-repeat="w in sortByFreq(km.pool)" ><font size="{{ 4+myLog(wordCounter.get(w)) }}">{{ w }}</font>({{wordCounter.get(w)}}) </span>
             </div>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
             <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
@@ -85,6 +85,7 @@ app.controller("karmaKontrol", function($scope, $http) {
     $scope.hideWords=true;
     $scope.startIndex = 0;
     $scope.anagrams = [];
+    $scope.cachedAnagrams = [];
     $scope.errors = [];
     $scope.sourceWords = "";
     $scope.pageSize = 20;
@@ -113,7 +114,6 @@ app.controller("karmaKontrol", function($scope, $http) {
 
     $scope.forwardPage = function() {
         $scope.startIndex += $scope.pageSize;
-        console.log($scope.startindex);
     };
 
     $scope.backwardPage = function() {
@@ -157,8 +157,14 @@ app.controller("karmaKontrol", function($scope, $http) {
         
         $scope.numAnagrams = 0;
         $scope.wordCounter.counters.clear();
+        $scope.cachedAnagrams = [];
+        $scope.iterator = $scope.km.makeAnagrams([$scope.sourceWords]);
 
-        for ( let a of $scope.km.makeAnagrams([$scope.sourceWords]) ) {
+        while ( true ) {
+            let n = $scope.iterator.next();
+            if ( n.done ) break;
+            let a = n.value;
+            $scope.cachedAnagrams.push(a);
             for ( let w of a ) { 
                 $scope.wordCounter.countString(w.toLowerCase());
             }
@@ -186,17 +192,37 @@ app.controller("karmaKontrol", function($scope, $http) {
             return 1;
         }
         return 0;
+    };
+
+    function min(a, b) {
+        if ( a < b ) {
+            return a;
+        }
+        return b;
     }
 
     function makeAnagrams() {
-        $scope.count = 0;
+        $scope.count = min($scope.startIndex, $scope.cachedAnagrams.length);
         $scope.anagrams = [];
-        for ( let a of $scope.km.makeAnagrams([$scope.sourceWords]) ) {
-            if ( $scope.count >= $scope.startIndex && $scope.count < ($scope.startIndex+$scope.pageSize) ) {
-                $scope.anagrams.push(a.join(" "));
+        while ( $scope.count <= $scope.startIndex + $scope.pageSize ) {
+            if ( $scope.count < $scope.cachedAnagrams.length ) {
+                if ( $scope.count < $scope.startIndex + $scope.pageSize ) {
+                    $scope.anagrams.push($scope.cachedAnagrams[$scope.count].join(" "));
+                }
+            } else {
+                let n = $scope.iterator.next();
+                if ( n.done ) {
+                    break;
+                }
+                $scope.cachedAnagrams.push(n.value);
+                for ( let w of n.value ) {
+                    $scope.wordCounter.countString(w.toLower);
+                }
+                if ( $scope.count >= $scope.startIndex && $scope.count < ($scope.startIndex+$scope.pageSize) ) {
+                    $scope.anagrams.push(n.value.join(" "));
+                }
             }
             $scope.count++;
-            if ( $scope.count > ($scope.startIndex + $scope.pageSize) ) break;
         }
     }
 });
