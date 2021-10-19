@@ -1,9 +1,9 @@
-class CharCounter {
+class StringCounter {
     constructor() {
         this.counters = new Map();
     }
 
-    countChar(c) {
+    countString(c) {
         if ( this.counters.has(c) ) {
             this.counters.set(c, this.counters.get(c) + 1);
         } else {
@@ -20,11 +20,11 @@ class CharCounter {
     }
 
     remove(other) {
-        var retval = new CharCounter();
+        var retval = new StringCounter();
         this.counters.forEach(function(value,key){
             var newval = value - other.get(key);
             if ( newval < 0 ) {
-                alert("Tried to remove more than was there in CharCounter");
+                alert("Tried to remove more than was there in StringCounter");
             } else if ( newval > 0 ) {
                 retval.counters.set(key, newval);
             }
@@ -112,12 +112,12 @@ class KarmaManager {
 }
 
 function parseWord(word) {
-    let cntr = new CharCounter();
+    let cntr = new StringCounter();
     let new_word = word.toLowerCase();
     for (let index = 0; index < new_word.length; index++ ) {
         var c = new_word[index];
         if ( c >= 'a' && c <= 'z') {
-            cntr.countChar(new_word[index]);
+            cntr.countString(new_word[index]);
         }
     }
     return cntr;

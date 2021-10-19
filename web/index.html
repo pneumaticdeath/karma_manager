@@ -46,7 +46,7 @@ table tr:nth-child(even) {
                 <strong>Dictionary words in use:</strong>
                 <button style="float: right; position: relative;" ng-click="showWords(false)"><strong>&times;</strong></button>
                 <br/>
-                <span ng-repeat="w in makeReverse(km.pool)">{{ w }} </span>
+                <span ng-repeat="w in sortByFreq(km.pool)" ><font size="{{ 5+myLog(wordCounter.get(w)) }}">{{ w }}</font>({{wordCounter.get(w)}}) </span>
             </div>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
             <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
@@ -60,7 +60,7 @@ table tr:nth-child(even) {
                 </table>
             </div>
             <button type="button" ng-click="backwardPage()" ng-disabled="startIndex <= 0">backward</button>
-            Anagrams {{ startIndex + 1 }} to {{ startIndex + anagrams.length }}&nbsp;
+            Anagrams {{ startIndex + 1 }} to {{ startIndex + anagrams.length }} of {{ numAnagrams }}&nbsp;
             <button type="button" ng-click="forwardPage()" ng-disabled="count <= startIndex + pageSize">forward</button> <p/>
             <table>
                 <tr ng-repeat="a in anagrams">
@@ -88,6 +88,9 @@ app.controller("karmaKontrol", function($scope, $http) {
     $scope.errors = [];
     $scope.sourceWords = "";
     $scope.pageSize = 20;
+    $scope.wordCounter = new StringCounter();
+    $scope.numAnagrams = 0;
+    $scope.maxAnagramCount = 5000;
 
     $scope.toggleAdvanced = function() {
         if ( $scope.advanced == "none" ) {
@@ -118,9 +121,11 @@ app.controller("karmaKontrol", function($scope, $http) {
         if ( $scope.startIndex < 0 ) $scope.startIndex = 0;
     };
 
-    $scope.makeReverse = function(l) {
+    $scope.sortByFreq = function(l) {
         let retval = [...l];
         retval.reverse();
+        retval = [...retval.filter(function(x) { return $scope.wordCounter.get(x) > 0; })];
+        retval.sort(function(a,b) { return b.length*$scope.wordCounter.get(b) >= a.length*$scope.wordCounter.get(a); });
         return retval;
     };
 
@@ -149,12 +154,39 @@ app.controller("karmaKontrol", function($scope, $http) {
         }
 
         $scope.startIndex = 0;
+        
+        $scope.numAnagrams = 0;
+        $scope.wordCounter.counters.clear();
+
+        for ( let a of $scope.km.makeAnagrams([$scope.sourceWords]) ) {
+            for ( let w of a ) { 
+                $scope.wordCounter.countString(w.toLowerCase());
+            }
+            if ( ++$scope.numAnagrams >= $scope.maxAnagramCount ) {
+                $scope.numAnagrams = "many"
+                break;
+            }
+        }
+
         makeAnagrams();
     });
 
     $scope.$watchCollection("[startIndex, pageSize]", function( newValue, oldValue ) {
         makeAnagrams();
     });
+
+    $scope.myLog = function(num) {
+        if ( num >= 125 ) {
+            return 4;
+        } else if ( num >= 25 ) {
+            return 3;
+        } else if ( num >= 5 ) {
+            return 2;
+        } else if ( num >= 1 ) {
+            return 1;
+        }
+        return 0;
+    }
 
     function makeAnagrams() {
         $scope.count = 0;
