@@ -59,9 +59,11 @@ table tr:nth-child(even) {
                     </tr>
                 </table>
             </div>
-            <button type="button" ng-click="backwardPage()" ng-disabled="startIndex <= 0">backward</button>
-            Anagrams {{ startIndex + 1 }} to {{ startIndex + anagrams.length }} of {{ numAnagrams }}&nbsp;
-            <button type="button" ng-click="forwardPage()" ng-disabled="count <= startIndex + pageSize">forward</button> <p/>
+            <div ng-hide="anagrams.length == 0">
+                <button type="button" ng-click="backwardPage()" ng-disabled="startIndex <= 0">backward</button>
+                Anagrams {{ startIndex + 1 }} to {{ startIndex + anagrams.length }} of {{ numAnagrams }}&nbsp;
+                <button type="button" ng-click="forwardPage()" ng-disabled="count <= startIndex + pageSize">forward</button> <p/>
+            </div>
             <table>
                 <tr ng-repeat="a in anagrams">
                     <td>{{ a }}</td>
