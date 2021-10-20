@@ -117,7 +117,7 @@ function parseWord(word) {
     for (let index = 0; index < new_word.length; index++ ) {
         var c = new_word[index];
         if ( c >= 'a' && c <= 'z') {
-            cntr.countString(new_word[index]);
+            cntr.countString(c);
         }
     }
     return cntr;
