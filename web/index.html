@@ -40,7 +40,7 @@ table tr:nth-child(even) {
         <span style="font-size:3vw">the Anagram Maker</span><p/>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
-            Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 500 }'></input><p/>
+            Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 250 }'></input><p/>
             Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary<p/>
             <div class="divFloat" ng-hide="hideWords">
                 <strong>Dictionary words in use:</strong>
