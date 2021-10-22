@@ -1,0 +1,26 @@
+{
+    "dictionaries": [
+        {
+            "description": "Main dictionary",
+            "file": "dict.json",
+	    "enabled": true
+        },
+        {
+            "description": "Names",
+            "file": "names.json",
+	    "enabled": false
+        },
+	{
+            "description": "Places",
+            "file": "places.json",
+            "enabled": true
+        },
+        {
+            "description": "Offensive words",
+            "file": "offensive.json",
+            "enabled": false
+        }
+    ]
+}
+
+

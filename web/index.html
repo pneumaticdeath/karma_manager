@@ -41,6 +41,7 @@ table tr:nth-child(even) {
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
             Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 250 }'></input><p/>
+            Dictionaries: /<span ng-repeat="d in config.dictionaries"><input type="checkbox" ng-model="d.enabled" ng-change="refreshDictionaries()">{{ d.description }}</input>/</span><p/>
             Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary<p/>
             <div class="divFloat" ng-hide="hideWords">
                 <strong>Dictionary words in use:</strong>
@@ -77,13 +78,10 @@ table tr:nth-child(even) {
         <script>
 var app = angular.module("karmaManager", []);
 app.controller("karmaKontrol", function($scope, $http) {
-    $scope.km = new KarmaManager([]);
+    $scope.km = new KarmaManager();
+    $scope.config = new Object();
+    $scope.config.dictionaries = [];
     $scope.advanced = "none";
-    $http.get('dict.json').then( function(response) {
-        $scope.dict = response.data;
-        $scope.km = new KarmaManager($scope.dict);
-    })
-
     $scope.hideWords=true;
     $scope.startIndex = 0;
     $scope.anagrams = [];
@@ -94,6 +92,32 @@ app.controller("karmaKontrol", function($scope, $http) {
     $scope.wordCounter = new StringCounter();
     $scope.numAnagrams = 0;
     $scope.maxAnagramCount = 5000;
+
+    $scope.refreshDictionaries = function() {
+        $scope.km = new KarmaManager();
+        let numDicts = 0;
+        for ( d of $scope.config.dictionaries ) {
+            if ( d.enabled ) {
+                $http.get(d.file).then( function(response) {
+                    $scope.km.readDictionary(response.data)
+                    refreshAnagrams();
+                });
+                numDicts += 1;
+            }
+        }
+        if ( numDicts == 0 ) {
+            $scope.errors.push('You need to have at least one dictionary enabled');
+        } 
+    }
+
+    $http.get('config.json').then( function(response) {
+        $scope.config = response.data;
+        $scope.refreshDictionaries();
+    });
+
+    $scope.toggleDict = function(d) {
+        d.enabled = ! d.enabled;
+    };
 
     $scope.toggleAdvanced = function() {
         if ( $scope.advanced == "none" ) {
@@ -110,7 +134,7 @@ app.controller("karmaKontrol", function($scope, $http) {
         $scope.hideWords = ! flag;
     };
 
-    $scope.toggleWords = function(flag) {
+    $scope.toggleWords = function() {
         $scope.hideWords = ! $scope.hideWords;
     };
 
@@ -127,11 +151,15 @@ app.controller("karmaKontrol", function($scope, $http) {
         let retval = [...l];
         retval.reverse();
         retval = [...retval.filter(function(x) { return $scope.wordCounter.get(x) > 0; })];
-        retval.sort(function(a,b) { return b.length*$scope.wordCounter.get(b) >= a.length*$scope.wordCounter.get(a); });
+        retval.sort(function(a,b) { if ( b.length*$scope.wordCounter.get(b) >= a.length*$scope.wordCounter.get(a) ) return 1; else return -1;});
         return retval;
     };
 
     $scope.$watchCollection("[sourceWords, seedText, exclusions]", function( newValue, oldValue ) {
+        refreshAnagrams();
+    });
+
+    function refreshAnagrams() {
         $scope.errors = [];
 
         $scope.km.clearSeedSet();
@@ -177,7 +205,7 @@ app.controller("karmaKontrol", function($scope, $http) {
         }
 
         makeAnagrams();
-    });
+    };
 
     $scope.$watchCollection("[startIndex, pageSize]", function( newValue, oldValue ) {
         makeAnagrams();

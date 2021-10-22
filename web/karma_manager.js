@@ -52,9 +52,8 @@ class StringCounter {
 }
 
 class KarmaManager {
-    constructor(dict) {
+    constructor() {
         this.dictionary = new Map();
-        this.readDictionary(dict);
         this.exclusionSet = new Set();
         this.seedSet = [];
         this.pool = [];
@@ -95,7 +94,7 @@ class KarmaManager {
 
     findWordPool() {
         this.pool = findSubsets(this.target, this.dictionary.keys(), this.dictionary);
-        this.pool.sort(function(a,b){return a.length-b.length || a>b})
+        this.pool.sort(function(a,b){return a.length-b.length || (a>=b?1:-1)})
 
         return this.pool;
     }
