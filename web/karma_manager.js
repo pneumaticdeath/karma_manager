@@ -24,7 +24,7 @@ class StringCounter {
         this.counters.forEach(function(value,key){
             var newval = value - other.get(key);
             if ( newval < 0 ) {
-                alert("Tried to remove more than was there in StringCounter");
+                console.log("Tried to remove more than was there in StringCounter");
             } else if ( newval > 0 ) {
                 retval.counters.set(key, newval);
             }

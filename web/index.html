@@ -40,14 +40,14 @@ table tr:nth-child(even) {
         <span style="font-size:3vw">the Anagram Maker</span><p/>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
-            Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 250 }'></input><p/>
+            Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 500 }'></input><p/>
             Dictionaries: /<span ng-repeat="d in config.dictionaries"><input type="checkbox" ng-model="d.enabled" ng-change="refreshDictionaries()">{{ d.description }}</input>/</span><p/>
             Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary<p/>
             <div class="divFloat" ng-hide="hideWords">
                 <strong>Dictionary words in use:</strong>
                 <button style="float: right; position: relative;" ng-click="showWords(false)"><strong>&times;</strong></button>
                 <br/>
-                <span ng-repeat="w in sortByFreq(km.pool)" ><font size="{{ 4+myLog(wordCounter.get(w)) }}">{{ w }}</font>({{wordCounter.get(w)}}) </span>
+                <span ng-repeat="w in sortByFreq(km.pool)"><font size="{{ 3+myLog(wordCounter.get(w)) }}">{{ w }} </font></span>
             </div>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
             <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
