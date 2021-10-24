@@ -50,8 +50,8 @@ table tr:nth-child(even) {
                 <span ng-repeat="w in sortByFreq(km.pool)"><font size="{{ 3+myLog(wordCounter.get(w)) }}">{{ w }} </font></span>
             </div>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
-            <div style="display: {{ advanced }};"> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
-            <div style="display: {{ advanced }};"> Exclude words: <textarea style="width: 30vw;"  ng-model="exclusions"></textarea><p/></div>
+            <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
+            <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Exclude words: <textarea style="width: 30vw;"  ng-model="exclusions"></textarea><p/></div>
             Page size: <input type="range" ng-model="pageSize" min=10 max=50> {{ pageSize }} <p/>
             <div>
                 <table>
