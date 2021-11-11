@@ -8,7 +8,7 @@ class CharCounter(object):
     def __init__(self):
         self._map = {}
 
-    def count(self,c):
+    def count(self, c):
         if c in self._map:
             self._map[c] += 1
         else:
