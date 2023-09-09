@@ -1,10 +1,19 @@
 {
-    "dictionaries": [
+    "main_dictionaries": [
         {
             "description": "Main dictionary",
-            "file": "dict.json",
-	    "enabled": true
+            "file": "main-dict.json"
         },
+        {
+            "description": "Simplified dictionary",
+            "file": "simple-dict.json"
+        },
+        {
+            "description": "Basic words",
+            "file": "basic-dict.json"
+        }
+    ],
+    "added_dictionaries": [
         {
             "description": "Names",
             "file": "names.json",

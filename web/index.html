@@ -41,7 +41,8 @@ table tr:nth-child(even) {
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
             Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 500 }'></input><p/>
-            Dictionaries: /<span ng-repeat="d in config.dictionaries"><input type="checkbox" ng-model="d.enabled" ng-change="refreshDictionaries()">{{ d.description }}</input>/</span><p/>
+            Main Dictionary: <select ng-model="mainDict" ng-change="refreshDictionaries()"><option ng-repeat="d in config.main_dictionaries" value="{{ d.file }}">{{ d.description }}</option></select><p/>
+            Additional Dictionaries: /<span ng-repeat="d in config.added_dictionaries"><input type="checkbox" ng-model="d.enabled" ng-change="refreshDictionaries()">{{ d.description }}</input>/</span><p/>
             Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary<p/>
             <div class="divFloat" ng-hide="hideWords">
                 <strong>Dictionary words in use:</strong>
@@ -80,7 +81,7 @@ var app = angular.module("karmaManager", []);
 app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.km = new KarmaManager();
     $scope.config = new Object();
-    $scope.config.dictionaries = [];
+    $scope.config.added_dictionaries = [];
     if ($location.search().include || $location.search().exclude) {
         $scope.advanced = "";
         $scope.seedText = $location.search().include;
@@ -102,10 +103,18 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.refreshDictionaries = function() {
         $scope.km = new KarmaManager();
         let numDicts = 0;
-        for ( d of $scope.config.dictionaries ) {
+        if ($scope.mainDict) {
+            $http.get($scope.mainDict).then( function(response) {
+                $scope.km.readDictionary(response.data);
+                refreshAnagrams();
+            });
+        numDicts += 1;
+        }
+
+        for ( d of $scope.config.added_dictionaries ) {
             if ( d.enabled ) {
                 $http.get(d.file).then( function(response) {
-                    $scope.km.readDictionary(response.data)
+                    $scope.km.readDictionary(response.data);
                     refreshAnagrams();
                 });
                 numDicts += 1;
@@ -118,6 +127,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
 
     $http.get('config.json').then( function(response) {
         $scope.config = response.data;
+        $scope.mainDict = $scope.config.main_dictionaries[0].file;
         $scope.refreshDictionaries();
     });
 
