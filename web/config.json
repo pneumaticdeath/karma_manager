@@ -1,15 +1,15 @@
 {
     "main_dictionaries": [
         {
-            "description": "Main dictionary",
-            "file": "main-dict.json"
+            "description": "Full dictionary",
+            "file": "full-dict.json"
         },
         {
             "description": "Simplified dictionary",
             "file": "simple-dict.json"
         },
         {
-            "description": "Basic words",
+            "description": "Basic words only",
             "file": "basic-dict.json"
         }
     ],

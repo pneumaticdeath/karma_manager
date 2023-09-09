@@ -82,19 +82,12 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.km = new KarmaManager();
     $scope.config = new Object();
     $scope.config.added_dictionaries = [];
-    if ($location.search().include || $location.search().exclude) {
-        $scope.advanced = "";
-        $scope.seedText = $location.search().include;
-        $scope.exclusions = $location.search().exclude;
-    } else {
-        $scope.advanced = "none";
-    }
+    $scope.mainDict = $location.search().maindict;
     $scope.hideWords=true;
     $scope.startIndex = 0;
     $scope.anagrams = [];
     $scope.cachedAnagrams = [];
     $scope.errors = [];
-    $scope.sourceWords = $location.search().input || "Anagram Maker";
     $scope.pageSize = 20;
     $scope.wordCounter = new StringCounter();
     $scope.numAnagrams = 0;
@@ -108,7 +101,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
                 $scope.km.readDictionary(response.data);
                 refreshAnagrams();
             });
-        numDicts += 1;
+            numDicts += 1;
         }
 
         for ( d of $scope.config.added_dictionaries ) {
@@ -127,9 +120,25 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
 
     $http.get('config.json').then( function(response) {
         $scope.config = response.data;
-        $scope.mainDict = $scope.config.main_dictionaries[0].file;
+
+        if ($scope.mainDict) {
+            console.log("Using main " + $scope.mainDict);
+        } else {
+            console.log("Using default main while selector is " + $scope.mainDict);
+            $scope.mainDict = $scope.config.main_dictionaries[0].file;
+        }
+
         $scope.refreshDictionaries();
     });
+
+    $scope.sourceWords = $location.search().input || "Anagram Maker";
+    if ($location.search().include || $location.search().exclude) {
+        $scope.advanced = "";
+        $scope.seedText = $location.search().include;
+        $scope.exclusions = $location.search().exclude;
+    } else {
+        $scope.advanced = "none";
+    }
 
     $scope.toggleDict = function(d) {
         d.enabled = ! d.enabled;
@@ -176,7 +185,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     });
 
     function refreshAnagrams() {
-        $location.search({'input':$scope.sourceWords,'include':$scope.seedText,'exclude':$scope.exclusions})
+        $location.search({'input':$scope.sourceWords,'maindict':$scope.mainDict,'include':$scope.seedText,'exclude':$scope.exclusions})
         $scope.errors = [];
 
         $scope.km.clearSeedSet();
