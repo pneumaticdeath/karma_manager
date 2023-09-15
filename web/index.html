@@ -32,18 +32,23 @@ table tr:nth-child(even) {
         -webkit-transition: 200ms -webkit-transform;
         box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
     }
+    .logo {
+        float: right;
+    }
 </style>
     </head>
     
     <body>
+        <div class="logo"><img style="width: 30vw;" src="logo.svg"/></div>
         <span style="font-size:4vw">Karma Manager </span>
         <span style="font-size:3vw">the Anagram Maker</span><p/>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
             Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 500 }'></input><p/>
             Main Dictionary: <select ng-model="mainDict" ng-change="refreshDictionaries()"><option ng-repeat="d in config.main_dictionaries" value="{{ d.file }}">{{ d.description }}</option></select><p/>
-            Additional Dictionaries: /<span ng-repeat="d in config.added_dictionaries"><input type="checkbox" ng-model="d.enabled" ng-change="refreshDictionaries()">{{ d.description }}</input>/</span><p/>
-            Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary<p/>
+            Additional Dictionaries:<br/>
+            <span ng-repeat="d in config.added_dictionaries"><input type="checkbox" ng-model="d.enabled" ng-change="refreshDictionaries()">{{ d.description }}</input><br/></span><p/>
+            Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionaries<p/>
             <div class="divFloat" ng-hide="hideWords">
                 <strong>Dictionary words in use:</strong>
                 <button style="float: right; position: relative;" ng-click="showWords(false)"><strong>&times;</strong></button>
