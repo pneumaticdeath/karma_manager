@@ -88,6 +88,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.config = new Object();
     $scope.config.added_dictionaries = [];
     $scope.mainDict = $location.search().maindict;
+    $scope.addedDictionaries = $location.search().addeddicts;
     $scope.hideWords=true;
     $scope.startIndex = 0;
     $scope.anagrams = [];
@@ -131,6 +132,20 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
         } else {
             console.log("Using default main while selector is " + $scope.mainDict);
             $scope.mainDict = $scope.config.main_dictionaries[0].file;
+        }
+
+        if ($scope.addedDictionaries) {
+            let selectedAddedDictionaries = new Set();
+            for ( d of $scope.addedDictionaries.split(',') ) {
+                selectedAddedDictionaries.add(d);
+            }
+            for ( d of $scope.config.added_dictionaries ) {
+                if ( selectedAddedDictionaries.has(d.file) ) {
+                    d.enabled = true;
+                } else {
+                    d.enabled = false;
+                }
+            }
         }
 
         $scope.refreshDictionaries();
@@ -190,7 +205,13 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     });
 
     function refreshAnagrams() {
-        $location.search({'input':$scope.sourceWords,'maindict':$scope.mainDict,'include':$scope.seedText,'exclude':$scope.exclusions})
+        let selectedAddedDicts = [];
+        for ( d of $scope.config.added_dictionaries ) {
+            if ( d.enabled ) {
+                selectedAddedDicts.push(d.file);
+            }
+        }
+        $location.search({'input':$scope.sourceWords,'maindict':$scope.mainDict,'include':$scope.seedText,'exclude':$scope.exclusions,'addeddicts':selectedAddedDicts.join(',') || 'none'})
         $scope.errors = [];
 
         $scope.km.clearSeedSet();
