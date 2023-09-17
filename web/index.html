@@ -94,7 +94,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.anagrams = [];
     $scope.cachedAnagrams = [];
     $scope.errors = [];
-    $scope.pageSize = 20;
+    $scope.pageSize = parseInt($location.search().pagesize) || 20;
     $scope.wordCounter = new StringCounter();
     $scope.numAnagrams = 0;
     $scope.maxAnagramCount = 5000;
@@ -211,7 +211,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
                 selectedAddedDicts.push(d.file);
             }
         }
-        $location.search({'input':$scope.sourceWords,'maindict':$scope.mainDict,'include':$scope.seedText,'exclude':$scope.exclusions,'addeddicts':selectedAddedDicts.join(',') || 'none'})
+        $location.search({'input':$scope.sourceWords,'maindict':$scope.mainDict,'include':$scope.seedText,'exclude':$scope.exclusions,'addeddicts':selectedAddedDicts.join(',') || 'none','pagesize':$scope.pageSize})
         $scope.errors = [];
 
         $scope.km.clearSeedSet();
