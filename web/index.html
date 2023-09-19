@@ -21,6 +21,13 @@ table tr:nth-child(even) {
     .logo {
         float: right;
     }
+    .divFAQ {
+        margin: 5px auto;
+        float: top;
+        background-color: #EFEFFF;
+        color: #007F00;
+        width: 60vm;
+    }
     .divFloat {
         margin: 10px auto;
         clear: both;
@@ -39,11 +46,19 @@ table tr:nth-child(even) {
     </head>
     
     <body>
-        <div class="logo"><img style="width: 30vw;" src="logo.svg"/></div>
-        <span style="font-size:4vw">Karma Manager </span>
-        <span style="font-size:3vw">= Anagram Maker</span><p/>
-
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
+            <div class="logo"><img style="width: 30vw;" src="logo.svg" ng-click="toggleFAQ()"/></div>
+            <span style="font-size:4vw">Karma Manager </span>
+            <span style="font-size:3vw">= Anagram Maker</span><p/>
+            <div class="divFAQ" ng-hide="hideFAQ">
+                <button style="float: right; position: relative;" ng-click="toggleFAQ()"><strong>&times;</strong></button>
+                <span style="font-size:2vm;">
+                    <strong>Karma Manager</strong> is an <em>Anagram Maker</em>.  It will take your input and find sets of words that have the same letters.<br/>
+                    You can choose the main dictionary of words it should use, and can also choose to add in groups of words.<br/>
+                    If you turn on <strong>Advanced Features</strong>, you can provide phases which should be included, as well as words you wish to exclude.<br/>
+                </span><p/>
+            </div>
+
             Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 500 }'></input><p/>
             Main Dictionary: <select ng-model="mainDict" ng-change="refreshDictionaries()"><option ng-repeat="d in config.main_dictionaries" value="{{ d.file }}">{{ d.description }}</option></select><p/>
             Additional Dictionaries:<br/>
@@ -90,6 +105,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.mainDict = $location.search().maindict;
     $scope.addedDictionaries = $location.search().addeddicts;
     $scope.hideWords=true;
+    $scope.hideFAQ=true;
     $scope.startIndex = 0;
     $scope.anagrams = [];
     $scope.cachedAnagrams = [];
@@ -158,6 +174,10 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
         $scope.exclusions = $location.search().exclude;
     } else {
         $scope.advanced = "none";
+    }
+
+    $scope.toggleFAQ = function() {
+        $scope.hideFAQ = ! $scope.hideFAQ;
     }
 
     $scope.toggleDict = function(d) {
