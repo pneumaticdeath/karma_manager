@@ -48,8 +48,8 @@ table tr:nth-child(even) {
     <body>
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
             <div class="logo"><img style="width: 30vw;" src="logo.svg" ng-click="toggleFAQ()"/></div>
-            <span style="font-size:4vw">Karma Manager </span>
-            <span style="font-size:3vw">= Anagram Maker</span><p/>
+            <span style="font-size:4vw" ng-click="toggleFAQ()">Karma Manager </span>
+            <span style="font-size:3vw" ng-click="toggleFAQ()">= Anagram Maker</span><p/>
             <div class="divFAQ" ng-hide="hideFAQ">
                 <button style="float: right; position: relative;" ng-click="toggleFAQ()"><strong>&times;</strong></button>
                 <span style="font-size:2vm;">
