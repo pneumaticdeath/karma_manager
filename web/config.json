@@ -11,6 +11,10 @@
         {
             "description": "Basic words only",
             "file": "basic-dict.json"
+        },
+        {
+            "description": "Massive word list from github.com/dwyl/english-words",
+            "file": "massive-dict.json"
         }
     ],
     "added_dictionaries": [
