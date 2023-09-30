@@ -6,9 +6,9 @@ identically named and functional program for the Mac in the late 80's and early 
 MacOS 7.5!)
 
 There is a web implementation written in javascript using AngularJS 1.6.9.  It is more actively maintained, but the algorithms were
-perfected in the python implementation.  The dictionaries are derived from publicly avilable in this implementation are heavily
-curated/edited.  Their IP/licening status isn't clear, but I'd like to think they're at least covered by the MIT license that covers
-the code, and might even be public domain.
+perfected in the python implementation.  The dictionaries in this implementation are derived from publicly avilable sources, and have
+been heavily curated/edited.  Their IP/licening status isn't clear, but I'd like to think they're at least covered by the MIT license
+that covers the code, and might even be public domain.
 
 The python implementation (3, who uses 2 any more?) is strictly a command line interface or library.  It doesn't come with a dictionary
 of words to use (for licensing reasons.)  I've provided a script called `make_dict.sh` to fetch one from the internet, though how long
