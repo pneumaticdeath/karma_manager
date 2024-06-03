@@ -3,6 +3,10 @@
       "results": ["Entrap a God", "A danger pot"],
        "link": "https://karma-manager.com/#!?input=A%20Pet%20Dragon&maindict=simple-dict.json&addeddicts=places.json&pagesize=50" 
     },
+    { "input": "Slashdot.org",
+      "results": ["Harlots! Dogs!"],
+      "link": "https://karma-manager.com/#!?input=Slashdot.org&maindict=simple-dict.json&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+    },
     { "input": "University of Wyoming",
       "results": ["Give Snowy Uniformity"],
       "link": "https://karma-manager.com/#!?input=University%20of%20Wyoming&maindict=simple-dict.json&include=snowy&addeddicts=names.json,places.json&pagesize=20"
