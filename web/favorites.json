@@ -15,6 +15,10 @@
       "results": ["Ivy hurd naratives"],
       "link": "https://karma-manager.com/#!?input=Harvard%20University&maindict=simple-dict.json&include=ivy&exclude=&addeddicts=none&pagesize=50"
     },
+    { "input": "Stanford University",
+      "results": ["End ivy frustrations", "It's on vineyard's turf"],
+      "link": "https://karma-manager.com/#!?input=Stanford%20University&maindict=simple-dict.json&include=vineyards%20turf&exclude=&addeddicts=names.json,places.json,offensive.json&pagesize=10" 
+    },
     { "input": "Karma Manager",
       "results": ["Anagram maker"],
       "link": "https://karma-manager.com/#!?input=Karma%20Manager&maindict=simple-dict.json&include=Anagram&addeddicts=names.json,places.json&pagesize=20"
