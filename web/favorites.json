@@ -1,38 +1,38 @@
 [ 
     { "input": "A Pet Dragon",
       "results": ["Entrap a God", "A danger pot"],
-       "link": "https://karma-manager.com/#!?input=A%20Pet%20Dragon&maindict=simple-dict.json&addeddicts=places.json&pagesize=50" 
+       "link": "index.html#!?input=A%20Pet%20Dragon&maindict=simple-dict.json&addeddicts=places.json&pagesize=50" 
     },
     { "input": "Slashdot.org",
       "results": ["Harlots! Dogs!"],
-      "link": "https://karma-manager.com/#!?input=Slashdot.org&maindict=simple-dict.json&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+      "link": "index.html#!?input=Slashdot.org&maindict=simple-dict.json&addeddicts=names.json,places.json,offensive.json&pagesize=10"
     },
     { "input": "University of Wyoming",
       "results": ["Give Snowy Uniformity"],
-      "link": "https://karma-manager.com/#!?input=University%20of%20Wyoming&maindict=simple-dict.json&include=snowy&addeddicts=names.json,places.json&pagesize=20"
+      "link": "index.html#!?input=University%20of%20Wyoming&maindict=simple-dict.json&include=snowy&addeddicts=names.json,places.json&pagesize=20"
     },
     { "input": "Humboldt State University",
       "results": ["Oh! Relativity bums student"],
-      "link": "https://karma-manager.com/#!?input=Humboldt%20State%20University&maindict=simple-dict.json&include=student&exclude=&addeddicts=none&pagesize=50"
+      "link": "index.html#!?input=Humboldt%20State%20University&maindict=simple-dict.json&include=student&exclude=&addeddicts=none&pagesize=50"
     },
     { "input": "Harvard University",
       "results": ["Ivy hurd naratives"],
-      "link": "https://karma-manager.com/#!?input=Harvard%20University&maindict=simple-dict.json&include=ivy&exclude=&addeddicts=none&pagesize=50"
+      "link": "index.html#!?input=Harvard%20University&maindict=simple-dict.json&include=ivy&exclude=&addeddicts=none&pagesize=50"
     },
     { "input": "Stanford University",
       "results": ["End ivy frustrations", "It's on vineyard's turf"],
-      "link": "https://karma-manager.com/#!?input=Stanford%20University&maindict=simple-dict.json&include=vineyards%20turf&exclude=&addeddicts=names.json,places.json,offensive.json&pagesize=10" 
+      "link": "index.html#!?input=Stanford%20University&maindict=simple-dict.json&include=vineyards%20turf&exclude=&addeddicts=names.json,places.json,offensive.json&pagesize=10" 
     },
     { "input": "Karma Manager",
       "results": ["Anagram maker"],
-      "link": "https://karma-manager.com/#!?input=Karma%20Manager&maindict=simple-dict.json&include=Anagram&addeddicts=names.json,places.json&pagesize=20"
+      "link": "index.html#!?input=Karma%20Manager&maindict=simple-dict.json&include=Anagram&addeddicts=names.json,places.json&pagesize=20"
     },
     { "input": "Atari Computer",
       "results": ["Atomic Rapture","True Atomic Rap"],
-      "link": "https://karma-manager.com/#!?input=Atari%20Computer&maindict=simple-dict.json&include=atomic&addeddicts=places.json&pagesize=10"
+      "link": "index.html#!?input=Atari%20Computer&maindict=simple-dict.json&include=atomic&addeddicts=places.json&pagesize=10"
     },
     { "input": "Lovely Cats",
       "results": ["Vocal Style"],
-       "link": "https://karma-manager.com/#!?input=Lovely%20Cats&maindict=simple-dict.json&include=vocal&addeddicts=places.json&pagesize=10" 
+       "link": "index.html#!?input=Lovely%20Cats&maindict=simple-dict.json&include=vocal&addeddicts=places.json&pagesize=10" 
     }
 ]
