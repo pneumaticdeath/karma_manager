@@ -7,6 +7,10 @@
       "results": ["Harlots! Dogs!"],
       "link": "index.html#!?input=Slashdot.org&maindict=simple-dict.json&addeddicts=names.json,places.json,offensive.json&pagesize=10"
     },
+    { "input": "Star Wars Ep. IV: A New Hope",
+      "results": ["Ah! So... Pew Pew Narratives"],
+      "link": "index.html#!?input=Star%20Wars%20Ep.%20IV:%20A%20New%20Hope&maindict=simple-dict.json&include=pew%20pew&exclude=&addeddicts=offensive.json&pagesize=10"
+    },
     { "input": "University of Wyoming",
       "results": ["Give Snowy Uniformity"],
       "link": "index.html#!?input=University%20of%20Wyoming&maindict=simple-dict.json&include=snowy&addeddicts=names.json,places.json&pagesize=20"
@@ -18,6 +22,10 @@
     { "input": "Harvard University",
       "results": ["Ivy hurd naratives"],
       "link": "index.html#!?input=Harvard%20University&maindict=simple-dict.json&include=ivy&exclude=&addeddicts=none&pagesize=50"
+    },
+    { "input": "Massachusetts Institute of Technology",
+      "results": ["A tact to my infectious thoughtlessness"],
+      "link": "index.html#!?input=Massachusetts%20Institute%20of%20Technology&maindict=simple-dict.json&include=&addeddicts=names.json,places.json,offensive.json&pagesize=10"
     },
     { "input": "Stanford University",
       "results": ["End ivy frustrations", "It's on vineyard's turf"],

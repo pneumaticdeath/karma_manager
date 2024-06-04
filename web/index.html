@@ -98,9 +98,12 @@ table tr:nth-child(even) {
             </table>
         </div>
 
-        Copyright 2021,2023,2024 (of the web implementation) 
-          by Mitch <a href="https://karma-manager.com/#!?input=Mitch%20Patenaude&maindict=simple-dict.json&include=Pneumatic&addeddicts=none&pagesize=10"><em>"Pneumatic Death"</em></a> <a href="https://patenaude.io/">Patenaude</a> <a href="mailto:mitch@mitchpatenaude.net?subject=Karma%20Manager">(email)</a><br/>
-        (with thanks to the author of the 80's Mac Shareware)
+        <p>
+        <center>
+            Copyright 2021,2023,2024 (the web implementation)
+                by Mitch <a href="https://karma-manager.com/#!?input=Mitch%20Patenaude&maindict=simple-dict.json&include=Pneumatic&addeddicts=none&pagesize=10"><em>"Pneumatic Death"</em></a> <a href="https://patenaude.io/">Patenaude</a> <a href="mailto:mitch@mitchpatenaude.net?subject=Karma%20Manager">(email)</a><br/>
+            (with thanks to the author of the 80's Mac Shareware)
+        </center>
 
         <script>
 var app = angular.module("karmaManager", []);
@@ -119,7 +122,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.pageSize = parseInt($location.search().pagesize) || 20;
     $scope.wordCounter = new StringCounter();
     $scope.numAnagrams = 0;
-    $scope.maxAnagramCount = 5000;
+    $scope.maxAnagramCount = 50000;
 
     $scope.refreshDictionaries = function() {
         $scope.km = new KarmaManager();
