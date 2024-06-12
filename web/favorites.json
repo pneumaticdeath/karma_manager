@@ -23,6 +23,10 @@
       "results": ["Steadiest nut", "I eat students!"],
       "link": "index.html#!?input=United%20States&maindict=simple-dict.json&include=&addeddicts=names.json,places.json,offensive.json&pagesize=10"
     },
+    { "input": "United States of America",
+      "results": ["Resident at a mute fiasco", "I'd use a fiasco treatment"],
+      "link": "index.html#!?input=United%20States%20of%20America&maindict=simple-dict.json&include=resident%20at%20a%20mute%20fiasco%0AI'd%20use%20a%20fiasco%20treatment&exclude=menstruate&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+    },
     { "input": "University of Wyoming",
       "results": ["Give snowy uniformity"],
       "link": "index.html#!?input=University%20of%20Wyoming&maindict=simple-dict.json&include=snowy&addeddicts=names.json,places.json&pagesize=20"
