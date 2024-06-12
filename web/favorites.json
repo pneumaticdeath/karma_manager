@@ -11,8 +11,20 @@
       "results": ["Ah! So... Pew Pew Narratives"],
       "link": "index.html#!?input=Star%20Wars%20Ep.%20IV:%20A%20New%20Hope&maindict=simple-dict.json&include=pew%20pew&exclude=&addeddicts=offensive.json&pagesize=10"
     },
+    { "input": "San Francisco Airport",
+      "results": ["Transpacific roars on"],
+      "link": "index.html#!?input=San%20Francisco%20Airport&maindict=simple-dict.json&include=&addeddicts=places.json,offensive.json&pagesize=10"
+    },
+    { "input": "San Francisco Bay Area",
+      "results": ["Banana accessory fair"],
+      "link": "index.html#!?input=San%20Francisco%20Bay%20Area&maindict=simple-dict.json&include=banana&exclude=&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+    },
+    { "input": "United States",
+      "results": ["Steadiest nut", "I eat students!"],
+      "link": "index.html#!?input=United%20States&maindict=simple-dict.json&include=&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+    },
     { "input": "University of Wyoming",
-      "results": ["Give Snowy Uniformity"],
+      "results": ["Give snowy uniformity"],
       "link": "index.html#!?input=University%20of%20Wyoming&maindict=simple-dict.json&include=snowy&addeddicts=names.json,places.json&pagesize=20"
     },
     { "input": "Humboldt State University",
