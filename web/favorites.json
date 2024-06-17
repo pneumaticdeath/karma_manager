@@ -7,6 +7,14 @@
       "results": ["Harlots! Dogs!"],
       "link": "index.html#!?input=Slashdot.org&maindict=simple-dict.json&addeddicts=names.json,places.json,offensive.json&pagesize=10"
     },
+    { "input": "Debian Linux",
+      "results": ["Unix nail bed"],
+      "link": "index.html#!?input=Debian%20Linux&maindict=simple-dict.json&include=&exclude=&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+    },
+    { "input": "Red Hat Linux",
+      "results": ["The Unix lard"],
+      "link": "index.html#!?input=Red%20Hat%20Linux&maindict=simple-dict.json&include=unix&exclude=&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+    },
     { "input": "Star Wars Ep. IV: A New Hope",
       "results": ["Ah! So... Pew Pew Narratives"],
       "link": "index.html#!?input=Star%20Wars%20Ep.%20IV:%20A%20New%20Hope&maindict=simple-dict.json&include=pew%20pew&exclude=&addeddicts=offensive.json&pagesize=10"
