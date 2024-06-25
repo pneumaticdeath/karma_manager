@@ -2,8 +2,11 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Karma Manager is an Anagram Maker</title>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="lib/angular.min.js"></script>
+<script src="lib/ng-tags-input.min.js"></script>
 <script src="karma_manager.js"></script>
+<link rel="stylesheet" src="lib/ng-tags-input.min.css"></link>
+<link rel="stylesheet" src="lib/ng-tags-input.bootstrap.min.css"></link>
 <style>
 table, th , td  {
   border: 1px solid grey;
@@ -57,7 +60,8 @@ table tr:nth-child(even) {
                     You can choose the main dictionary of words it should use, and can also choose to add in groups of words.<br/>
                     If you turn on <strong>Advanced Features</strong>, you can provide phases which should be included, as well as words you wish to exclude.<p/>
                     This implementation runs entirely in your browser.  The only things transmitted back to my website are the dictionaries and word lists that are downloaded.
-                    However, it also fetches AngularJS from a google server, and I dont know what kind of tracking they do.  A warning though, if you give it a very complex input
+                    However, it also uses <a href="https://angularjs.org/">AngularJS</a> and <a href="https://mbenford.github.io/ngTagsInput/">ngTagsInput</a>, and I dont know what kind of tracking they do. <br/>
+                    A warning though, if you give it a very complex input
                     and/or ask it to generate a lot of anagrams, it can cause your brwoser to become slow or even crash. <br/>
                     You can see some of my <a href="favorites.html">favorite</a> anagrams that I've found.
                     I'm always looking for feedback, so if you have any, just click on the link on the bottom of the page to email me.<br/>
@@ -77,7 +81,7 @@ table tr:nth-child(even) {
             </div>
             <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
             <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
-            <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Exclude words: <textarea style="width: 30vw;"  ng-model="exclusions"></textarea><p/></div>
+            <div style="display: {{ advanced }};"> Exclude words: <tags-input add-on-space="true" min-length="1" placeholder="Word to exclude" on-tag-added="refreshExclusions($tag)" on-tag-removed="refreshExclusions($tag)" ng-model="exclusionTags"></tags-input><p/></div>
             Page size: <input type="range" ng-model="pageSize" min=10 max=50> {{ pageSize }} <p/>
             <div>
                 <table>
@@ -106,7 +110,7 @@ table tr:nth-child(even) {
         </center>
 
         <script>
-var app = angular.module("karmaManager", []);
+var app = angular.module("karmaManager", ['ngTagsInput']);
 app.controller("karmaKontrol", function($scope, $http, $location) {
     $scope.km = new KarmaManager();
     $scope.config = new Object();
@@ -180,6 +184,15 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
     if ($location.search().include || $location.search().exclude) {
         $scope.advanced = "";
         $scope.seedText = $location.search().include;
+        if ($location.search().exclude ) {
+            var x = [];
+            for (y of $location.search().exclude.split(' ')) {
+                x.push({"text": y});
+            }
+            $scope.exclusionTags = x;
+        } else {
+            $scope.exclusionTags = [];
+        }
         $scope.exclusions = $location.search().exclude;
     } else {
         $scope.advanced = "none";
@@ -201,6 +214,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
             $scope.km.clearSeedSet();
             $scope.seedText = "";
             $scope.exclusions = "";
+            $scope.exclusionTags = [];
         }
     };
 
@@ -233,6 +247,17 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
         refreshAnagrams();
     });
 
+    $scope.refreshExclusions = function (tag) {
+        var excl = [];
+        for ( let x of $scope.exclusionTags ) {
+            excl.push(x.text);
+        }
+        $scope.exclusions = excl.join(" ");
+
+        refreshAnagrams();
+        return true;
+    }
+
     function refreshAnagrams() {
         let selectedAddedDicts = [];
         for ( d of $scope.config.added_dictionaries ) {
@@ -240,7 +265,11 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
                 selectedAddedDicts.push(d.file);
             }
         }
-        $location.search({'input':$scope.sourceWords,'maindict':$scope.mainDict,'include':$scope.seedText,'exclude':$scope.exclusions,'addeddicts':selectedAddedDicts.join(',') || 'none','pagesize':$scope.pageSize})
+        $scope.km.clearExclusionSet();
+        if ( $scope.exclusions ) {
+            $scope.km.setExclusionSet($scope.exclusions.split(' '));
+        }
+
         $scope.errors = [];
 
         $scope.km.clearSeedSet();
@@ -259,10 +288,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
             }
         }
 
-        $scope.km.clearExclusionSet();
-        if ( $scope.exclusions ) {
-            $scope.km.setExclusionSet($scope.exclusions.split(/[\s,]+/));
-        }
+        $location.search({'input':$scope.sourceWords,'maindict':$scope.mainDict,'include':$scope.seedText,'exclude':$scope.exclusions,'addeddicts':selectedAddedDicts.join(',') || 'none','pagesize':$scope.pageSize})
 
         $scope.startIndex = 0;
         
