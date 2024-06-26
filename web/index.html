@@ -6,7 +6,6 @@
 <script src="lib/ng-tags-input.min.js"></script>
 <script src="karma_manager.js"></script>
 <link rel="stylesheet" src="lib/ng-tags-input.min.css"></link>
-<link rel="stylesheet" src="lib/ng-tags-input.bootstrap.min.css"></link>
 <style>
 table, th , td  {
   border: 1px solid grey;
@@ -186,7 +185,7 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
         $scope.seedText = $location.search().include;
         if ($location.search().exclude ) {
             var x = [];
-            for (y of $location.search().exclude.split(' ')) {
+            for (y of $location.search().exclude.split(" ")) {
                 x.push({"text": y});
             }
             $scope.exclusionTags = x;
@@ -249,8 +248,10 @@ app.controller("karmaKontrol", function($scope, $http, $location) {
 
     $scope.refreshExclusions = function (tag) {
         var excl = [];
-        for ( let x of $scope.exclusionTags ) {
-            excl.push(x.text);
+        if ( $scope.exclusionTags ) {
+            for ( x of $scope.exclusionTags ) {
+                excl.push(x.text);
+            }
         }
         $scope.exclusions = excl.join(" ");
 
