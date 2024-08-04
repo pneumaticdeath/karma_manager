@@ -3,6 +3,10 @@
       "results": ["Entrap a God", "A danger pot"],
        "link": "index.html#!?input=A%20Pet%20Dragon&maindict=simple-dict.json&addeddicts=places.json&pagesize=50" 
     },
+    { "input": "Pokemon Go: Charizard",
+      "results": ["Pro Hazard, cooking me"],
+      "link": "index.html#!?input=Pokemon%20Go:%20Charizard&maindict=simple-dict.json&include=hazard&exclude=&addeddicts=names.json,places.json,offensive.json&pagesize=10"
+    },
     { "input": "Slashdot.org",
       "results": ["Harlots! Dogs!"],
       "link": "index.html#!?input=Slashdot.org&maindict=simple-dict.json&addeddicts=names.json,places.json,offensive.json&pagesize=10"
@@ -40,8 +44,8 @@
       "link": "index.html#!?input=University%20of%20Wyoming&maindict=simple-dict.json&include=snowy&addeddicts=names.json,places.json&pagesize=20"
     },
     { "input": "Humboldt State University",
-      "results": ["Oh! Relativity bums student"],
-      "link": "index.html#!?input=Humboldt%20State%20University&maindict=simple-dict.json&include=student&exclude=&addeddicts=none&pagesize=50"
+      "results": ["Oh! Relativity bums student", "Hi.. My ventilated outburts"],
+      "link": "index.html#!?input=Humboldt%20State%20University&maindict=simple-dict.json&include=My%20ventilated%0AOh%20Relativity&exclude=&addeddicts=none&pagesize=50"
     },
     { "input": "Harvard University",
       "results": ["Ivy hurd naratives"],
